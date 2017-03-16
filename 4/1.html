@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>天气</title>
+		<style>
+			/**{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 500px;
+				height: 300px;
+				border: 2px solid red;
+				margin-left: 50px;
+				display: none;
+			}
+			#con{
+				width: 500px;
+				height: 50px;
+				border: 1px solid green;
+				text-align: center;
+				line-height: 50px;
+			}
+			#box ul li{
+				list-style: none;
+				width: 80px;
+				height: 30px;
+				border: 1px solid red;
+				float: left;
+				text-align: center;
+				line-height: 30px;
+				font-size: 20px;
+				font-weight: bold;
+				background: pink;
+			}*/
+			
+			
+			
+			*{margin: 0;padding: 0;list-style: none;}
+			#box{width: 500px;height: 400px;border:1px solid black;display: none;}
+			#con{font-size: 14px;width: 500px;height: 40px;border: 1px solid black;color: #00b7ee;}
+			li{display: block;float: left;border: 1px solid red;width:80px;text-align: center;}
+			li:nth-child(1){background: bisque;}
+			li:nth-child(2){background: bisque;}
+			li:nth-child(3){background: bisque;}
+			li:nth-child(4){background: bisque;}
+			li:nth-child(5){background: bisque;}
+			li:nth-child(6){background: bisque;}
+			li span{display: inline-block;width:50px;height: 40px;text-align: center;line-height: 40px;}
+			.news{}
+		</style>
+	</head>
+	<body>
+		
+		<select id="sel1"></select>
+		<select id="sel2"></select>
+		<select id="sel3"></select>
+		<button>获取天气</button>
+		<div id="box">
+			<div id="con"></div>
+			<div class="news">
+				<ul>
+				<li>风向</li>
+				<li>风级</li>
+				<li>高温</li>
+				<li>天气</li>
+				<li>低温</li>
+				<li>日期</li>				
+			</ul>
+			</div>
+		</div>
+		
+	</body>
+</html>
+
+<script src="../2/js/jquery-3.1.1.js"></script>
+<script>
+    
+   $(function(){
+   	           	$.ajax({
+		url:"city.json",
+		type:'get',
+		dataTape:'json',
+		data:'',
+		success:function(data){
+			//console.log(data);
+			$('#sel1').append("<option>"+'请选择'+"</option>");
+			$('#sel2').append("<option>"+'请选择'+"</option>");
+			$('#sel3').append("<option>"+'请选择'+"</option>");
+			
+			$.each(data.p,function(i,j){
+				$('#sel1').append("<option>"+j+"</option>");
+				$('#sel1').change(function(){
+					var $sel1=$(this).val();
+					$('#sel2').children().remove();
+					$('#sel3').children().remove();
+					$('#sel2').append("<option>"+'请选择'+"</option>");
+			        $('#sel3').append("<option>"+'请选择'+"</option>");
+					
+					$.each(data.c,function(i,j){
+						if($sel1==i){
+							$.each(j,function(a,b){
+								$('#sel2').append("<option>"+b+"</option>");
+							})
+							$('#sel2').change(function(){
+								$('#sel3').children().remove();
+								var $sel2=$(this).val();
+								$.each(data.a, function(c,d) {
+									if($sel1+'-'+$sel2==c){
+										$.each(d, function(e,f) {
+											$('#sel3').append("<option>"+f+"</option>");
+										});
+									}
+								});
+								
+								
+								
+							})
+						}
+					})
+				})
+			})
+		}
+	})
+	
+	
+	//获取天气
+//	 $('button').click(function(){
+//	 	$('#box').show();
+//	 	var  $sel2=$('#sel2').val();
+//		$.ajax({
+//			url:"http://wthrcdn.etouch.cn/weather_mini?city="+$sel2,
+//			type:'get',
+//			dataTape:'json',
+//			async:true,
+//			data:{},
+//			success:function(data){
+//				$.each(data,function(i,j){
+//					$('#con').html(j.ganmao);
+//				})
+//			}
+//		})
+//	 })
+
+
+   $('button').click(function(){
+				$('#box').show();
+				$('.news ul').children().remove();
+				var  $value=$('#sel2').val();
+				var $valu=$value.substring(0,$value.length-1);
+				    console.log($valu);
+				$.ajax({
+//					url:"http://wthrcdn.etouch.cn/weather_mini?city="+$valu,
+					url:"1.json",
+                    
+					type:'get',
+					data:{},
+					dataType:'json',
+					async:true,
+					success:function(data){
+						 console.log(data);
+						$.each(data,function(i,j){
+							$('#con').html(j.ganmao);
+							$.each(j.yesterday,function(k,l){
+								$('.news ul').append('<li>'+l+'</li>');
+							});
+							$.each(j.forecast,function(a,b){
+								console.log(b);
+								$.each(b,function(n,m){
+									$('.news ul').append('<li>'+m+'</li>');
+								});
+							})
+						})
+					}
+				})
+			})
+	    
+   })
+
+</script>

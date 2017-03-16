@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+			}
+			#box{
+				width: 600px;
+				height: 300px;
+				border: 2px solid red;
+				margin-left: 50px;
+				display: none;
+			}
+			#con{
+				width: 600px;
+				height: 50px;
+				border: 1px solid green;
+				text-align: center;
+				line-height: 50px;
+			}
+			#box .oul li{
+				list-style: none;
+				width: 97px;
+				height: 30px;
+				border: 1px solid red;
+				float: left;
+				text-align: center;
+				line-height: 30px;
+				font-size: 20px;
+				font-weight: bold;
+				background: pink;
+			}
+			li{
+				list-style: none;
+				width: 97px;
+				height: 30px;
+				border: 1px solid red;
+				float: left;
+				text-align: center;
+				line-height: 30px;
+				font-size: 16px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<select id="sel1"></select>
+		<select id="sel2"></select>
+		<select id="sel3"></select>
+		<button>获取天气</button>
+		<div id="box">
+			<div id="con"></div>
+			<ul class="oul">
+				<li>风向</li>
+				<li>风级</li>
+				<li>高温</li>
+				<li>天气</li>
+				<li>低温</li>
+				<li>日期</li>				
+			</ul>
+			<ul class="aul">
+				
+			</ul>
+		</div>
+		
+	</body>
+</html>
+
+<script src="jquery-3.1.1.js"></script>
+<script>
+
+		$.ajax({
+		url:"city.json",
+		type:'get',
+		dataTape:'json',
+		data:'',
+		success:function(data){
+			//console.log(data);
+			$('#sel1').append("<option>"+'请选择'+"</option>");
+			$('#sel2').append("<option>"+'请选择'+"</option>");
+			$('#sel3').append("<option>"+'请选择'+"</option>");
+			
+			$.each(data.p,function(i,j){
+				$('#sel1').append("<option>"+j+"</option>");
+				$('#sel1').change(function(){
+					var $sel1=$(this).val();
+					$('#sel2').children().remove();
+					$('#sel3').children().remove();
+					$('#sel2').append("<option>"+'请选择'+"</option>");
+			        $('#sel3').append("<option>"+'请选择'+"</option>");
+					
+					$.each(data.c,function(i,j){
+						if($sel1==i){
+							$.each(j,function(a,b){
+								$('#sel2').append("<option>"+b+"</option>");
+							})
+							$('#sel2').change(function(){
+								$('#sel3').children().remove();
+								var $sel2=$(this).val();
+								$.each(data.a, function(c,d) {
+									if($sel1+'-'+$sel2==c){
+										$.each(d, function(e,f) {
+											$('#sel3').append("<option>"+f+"</option>");
+										});
+									}
+								});
+							})
+						}
+					})
+				})
+			})
+		}
+	})
+	
+	//获取天气
+	$('button').click(function(){
+		$('#box').show();
+		$('.aul').children().remove();		
+		var $sel2=$('#sel2').val();
+		var $val=$sel2.substring(0,$sel2.length-1);
+//		console.log($val);
+		$.ajax({		
+		url:"http://wthrcdn.etouch.cn/weather_mini?city="+$val,
+		type:'get',				
+		dataType:'json',
+		async:true,
+		success:function(data){
+			//console.log(data);
+			$.each(data,function(i,j) {				
+				$('#con').html(j.ganmao);
+				$.each(j.yesterday, function(a,b) {					
+					$('.aul').append("<li>"+b+"</li>");
+				});
+				$.each(j.forecast, function(c,d) {
+					//console.log(j.forecast);
+					$.each(d, function(e,f) {
+						console.log(f);
+						$('.aul').append("<li>"+f+"</li>");
+					});
+				});
+			});
+		}
+	})
+})
+
+
+
+  
+
+	
+</script>
