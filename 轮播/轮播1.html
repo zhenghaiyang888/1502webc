@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		
+		<style>
+			*{
+	margin: 0;
+	padding: 0;
+}
+li{
+	list-style: none;
+}
+     .container{
+     	width: 500px;
+     	height: 200px;
+     	margin: 100px auto;
+     	position: relative;
+     	overflow: hidden;
+     	
+     }
+     .container .inner{
+     	width: 2000px;
+     	height: 200px;
+     	position: absolute;
+     	
+     }
+     .container .inner li{
+     	float: left;
+     	list-style: none;
+     }
+      .container .inner img{
+      	width: 500px;
+     	height: 200px;
+       display: block;
+      	border: 0;
+      }
+      .container .tips{
+      	position: absolute;
+      	bottom: 5px;
+      	right: 10px;
+      }
+      .container .tips .duo{
+      	border: 2px solid red;
+      }
+      .container .tips li{
+      	width: 50px;
+      	height: 20px;
+      	margin: 10px;
+      	float: left;
+      	
+      }
+      .container .tips img{
+      	width: 50px;
+      	height: 20px;
+      	display: block;
+      	border: 0;
+      }
+      
+      .pointer a{
+      	width: 20px;
+      	height: 60px;
+      	background: #555555;
+      	font-size: 30px;
+      	text-align: center;
+      	line-height: 60px;
+      	position: absolute;
+      	top: 50%;
+      	transform: translateY(-50%);
+      	text-decoration: none;
+      }
+      .pointer .btnleft{
+      	left: 0;
+      }
+      .pointer .btnright{
+      	right: 0;
+      }
+
+		</style>
+	</head>
+	<body>
+		
+		<div class="container">
+			<div class="inner">
+				<ul>
+					<li class="lun"><img src="img2/1.jpg" /></li>
+					<li><img src="img2/2.jpg" /></li>
+					<li><img src="img2/3.jpg" /></li>
+					<li><img src="img2/4.jpg" /></li>
+				</ul>	
+			</div>
+			<div class="tips">
+				<ul>
+					<li class="duo"><img src="img2/1.jpg"  /></li>
+					<li><img src="img2/2.jpg"  /></li>
+					<li><img src="img2/3.jpg"  /></li>
+					<li><img src="img2/4.jpg"  /></li>
+				</ul>
+			</div>
+			<div class="pointer">
+				<a href="javascript:;" class="btnleft"><</a>
+				<a href="javascript:;" class="btnright">></a>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script src="js/jquery-3.1.1.js"></script>
+<script>
+     $(function(){
+     	var i=0;
+     	var timer;
+     	var oli=$('.container .tips li');
+     	var olis=$('.container .tips .duo');
+     	$('.inner .lun:not(:first-child)').hide();
+     	getimer();
+     	function getimer(){
+     		timer=setInterval(function(){
+     			i++;
+     			style();
+     			if(i==3){
+     				i=-1;
+     			}
+     			
+     		},1000)
+     	}
+     	
+     	function style(){
+     		$('.inner li').eq(i).fadeIn(300).siblings('.inner li').fadeOut(300);
+     		oli.eq(i).addClass('duo').siblings(oli).removeClass('duo');
+     	
+     	}
+     	
+     	oli.hover(function(){
+     		i=$(this).index();
+     		style();
+     		clearInterval(timer);
+     	},function(){
+     		getimer();
+     	})
+     	
+     	$('.btnleft').click(function(){
+     		clearInterval(timer);
+     		
+     		if(i==0){
+     			i=4;
+     		}
+     		i--;
+     		getimer();
+     		style();
+     		
+     	})
+     	
+     	$('.btnright').click(function(){
+     		clearInterval(timer);
+     	
+     		if(i==3){
+     			i=-1;
+     		}
+     			i++;
+     			getimer();
+     		style();
+     		
+     	})
+     	
+     	$('.container').mouseover(function(){
+     		clearInterval(timer);
+     	})
+//   	$('.container').mouseout(function(){
+//   		getimer();
+//   		style();
+//   	})
+     })
+     
+     
+</script>
