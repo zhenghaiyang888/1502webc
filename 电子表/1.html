@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../js/jquery-3.1.1.js"></script>
+    <style>
+        #box{
+            width: 180px;
+            height: 60px;
+            background: greenyellow;
+            border: 20px solid #999;
+            line-height: 60px;
+            text-align: center;
+            font-size: 30px;
+            position: relative;
+        }
+        #box #sp1{
+            position: absolute;
+            left: 8px;
+            top: -20px;
+            font-size: 8px;
+        }
+        #box #sp2{
+            position: absolute;
+            right: 10px;
+            top: 20px;
+            font-size: 8px;
+        }
+    </style>
+</head>
+<body>
+<div id="box">
+    <span id="sp1"></span>
+    <span id="sp3"></span>
+    <span id="sp2"></span>
+</div>
+</body>
+<script>
+    $(function(){
+        setInterval(function(){
+            var data=new Date();
+            var second=data.getSeconds();
+            var minute=data.getMinutes();
+            var hover=data.getHours();
+            var week=data.getDay();
+
+            function getTimer(){
+                return zero(sj(hover))+':'+zero(minute)+':'+zero(second);
+            }
+            function zero(n){
+                return n=n<10?'0'+n:n;
+            }
+            function sj(m){
+                return m=m<=12?m:m-12;
+            }
+            function hov(){
+                return hr=hover<=12?"AM":"PM";
+            }
+
+            function weekDay(){
+                switch(week){
+                    case 1:
+                        x="MON";
+                        break;
+                    case 2:
+                        x="TUE";
+                        break;
+                    case 3:
+                        x="WED";
+                        break;
+                    case 4:
+                        x="THURS";
+                        break;
+                    case 5:
+                        x="FRI";
+                        break;
+                    case 6:
+                        x="SAT";
+                        break;
+                    case 0:
+                        x="SUN";
+                        break;
+                }
+                return x;
+            }
+            setInterval(getTimer,1000);
+                $("#sp3").html(getTimer());
+                $("#sp1").html(weekDay());
+                $("#sp2").html(hov());
+        },1000)
+    })
+</script>
+<ml>

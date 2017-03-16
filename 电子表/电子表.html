@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			*{
+				padding: 0;
+				margin: 0;
+				
+			}
+			#clock{
+				width: 500px;
+				height: 150px;
+				background:#3399FF;
+				margin: 100px auto;
+				
+				
+			}
+			
+			 #odiv{
+				width: 400px;
+				height: 100px;
+				background: #ccc;
+				display: inline-block;
+				margin-top: 26px;
+				margin-left: 50px;
+			}
+			
+			#week{
+				width: 400px;
+				height: 20px;
+				/*border: 1px solid red;*/
+				
+			}
+			#week b{
+				margin-left: 15px;
+			}
+			.timer{
+				width: 340px;
+				height: 60px;
+				/*border: 1px solid red;*/
+				margin-top: 10px;
+				float: left;
+				font-size: 60px;
+				font-weight: bold;
+				text-align: center;
+			}
+			.oap{
+				width: 40px;
+				height: 60px;
+				/*border: 1px solid red;*/
+				float: right;
+				margin-top: 10px;
+				
+				
+			}
+			.oap span{
+				display: block;
+				margin-top: 40px;
+				margin-left: 0px;
+			}
+		</style>
+	</head>
+	<body>
+		
+		<div id="clock">
+			<div id="odiv">
+				<div id="week"><b class="b1"></b></div>
+				<div class="timer" id="timer"></div>
+				<div class="oap"><span id="sp1"></span></div>
+			</div>
+		</div>
+	</body>
+</html>
+<script src="../js/jquery-3.1.1.js"></script>
+<script>
+	$(function(){
+		setInterval(function(){
+			var adate=new Date();
+			var y=adate.getFullYear();
+			var am=adate.getMonth()+1;
+			var day=adate.getDate();
+			
+	         //var str=["MON","TUE",'WED','THURS','FRI','SAT','SUN'];
+	      
+//	        	  
+	        var weeks=adate.getDay();
+//	        var week=str.charAt(weeks);
+		
+			
+			var h=adate.getHours();
+			var m=adate.getMinutes();
+			var s=adate.getSeconds();
+			
+	       function getimer(){
+	       	    return ''+zero(sum(h))+':'+zero(m)+':'+zero(s)+'';
+	       }
+	       
+		   function zero(n){
+			return n=n<10?'0'+n:n;
+		   }
+		   function sum(m){
+			return m=m>12?m-12:m; 
+		   }
+		   function ap(){
+		   	return h=h>12?"PM":"AM";
+		   }
+//		   function getday(){
+//		   	 switch(weeks){
+//		   	 	
+//		   	    case 1:
+//		   	      x="MON";
+//		   	      break;
+//		   	     case 2:
+//		   	      x="TUE";
+//		   	      break;
+//		   	     case 3:
+//		   	      x="WED";
+//		   	      break;
+//		   	     case 4:
+//		   	      x="THURS";
+//		   	      break;
+//		   	     case 5:
+//		   	      x="FRI";
+//		   	      break;
+//		   	    case 6:
+//		   	      x="SAT";
+//		   	      break;
+//		   	    case 7:
+//		   	 	  x="SUN";
+//		   	 	  break;
+//		   	    
+//		   	 }
+//		   	 return x;
+//		   }
+//		   
+		   function getday(){
+		   	 switch(weeks){
+		   	 	 case 0:
+		   	 	  x="SUN";
+		   	 	  break;
+		   	    case 1:
+		   	      x="MON";
+		   	      break;
+		   	     case 2:
+		   	      x="TUE";
+		   	      break;
+		   	     case 3:
+		   	      x="WED";
+		   	      break;
+		   	     case 4:
+		   	      x="THURS";
+		   	      break;
+		   	     case 5:
+		   	      x="FRI";
+		   	      break;
+		   	    case 6:
+		   	      x="SAT";
+		   	      break;
+		   	   
+		   	    
+		   	 }
+		   	 return x;
+		   }
+		   
+		   setInterval(getimer,1000);
+		   $('.timer').html(getimer);
+		   $('#sp1').html(ap());
+		   $('.b1').html(getday());
+		   
+		},1000)
+	
+	})
+	
+	
+	
+
+</script>
